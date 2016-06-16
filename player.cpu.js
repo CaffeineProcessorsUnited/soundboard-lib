@@ -7,7 +7,6 @@
   var module = (function(modulename) {
     function module(options) {
       this.name = modulename;
-      options = options || {};
       var defaults {
         timeupdateInterval = 500,
         container: '<div id="cpu"></div>'
@@ -17,7 +16,7 @@
         return;
       }
       this.cpu = options["cpu"];
-      options = this.cpu.extend(defaults, options);
+      options = this.cpu.extend(defaults, options || {});
       this.player
       this.timeupdate;
       this.timeupdateInterval = options.container;
