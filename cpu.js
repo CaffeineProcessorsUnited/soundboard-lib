@@ -1,14 +1,7 @@
 (function() {
   var cpu = (function() {
-    function cpu(config) {
-      if (config === undefined) {
-        config = {};
-      }
-      this.config = config;
+    function cpu() {
       this.modules = {};
-    };
-    cpu.prototype.config = function() {
-      return this.config;
     };
     cpu.prototype.loadModule = function(name, options, force) {
       if (!name || !(typeof name === "object" || name != "")) {

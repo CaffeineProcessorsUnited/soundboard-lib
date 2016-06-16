@@ -15,6 +15,9 @@
       this.config = {};
       this.update();
     };
+    module.prototype.load = function(config) {
+      this.config = config;
+    };
     module.prototype.get = function() {
       var c = this.config;
       for (var i = 0; i < arguments.length; i++) {
@@ -24,9 +27,6 @@
           return undefined;
         }
       }
-    };
-    module.prototype.update = function() {
-      this.cpu.module("socket").emit("get_config");
     };
     module.prototype.clear = function() {
       this.config = {};
