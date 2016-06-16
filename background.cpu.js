@@ -1,5 +1,5 @@
 /**
-  CPU - config
+  CPU - background 
   Dependency: core, events
 **/
 (function() {
