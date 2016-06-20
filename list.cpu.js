@@ -21,7 +21,7 @@
       };
       var list = $('<ul></ul>');
       options.list.forEach(function(item, index){
-        list.append(options.genRow(index, entry, options));
+        list.append(options.genRow(index, item, options));
       });
       return list;
     };
