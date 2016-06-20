@@ -27,6 +27,7 @@
           return undefined;
         }
       }
+			return c;
     };
     module.prototype.clear = function() {
       this.config = {};

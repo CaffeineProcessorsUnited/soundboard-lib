@@ -13,18 +13,16 @@
       }
       this.cpu = options["cpu"];
     }
-    module.prototype.genList = function(data, options) {
+    module.prototype.genList = function(options) {
       options = options || {};
-      options.genRow = options.genRow || function(item) {
-        return this.cpu.module("util").format(item);
+			options.list = options.list || [];
+      options.genRow = options.genRow || function(item, options) {
+        return $('<li></li>').text(this.cpu.module("util").format(item));
       };
       var list = $('<ul></ul>');
-      for (entry in data) {
-        var elem = $('<li></li>');
-        elem.addClass('item');
-        elem.html(options.genRow(entry));
-        list.append(elem);
-      }
+      options.list.forEach(function(item, index){
+        list.append(options.genRow(index, entry, options));
+      });
       return list;
     };
     return module;
