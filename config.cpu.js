@@ -7,6 +7,7 @@
   var module = (function(modulename) {
     function module(options) {
       this.name = modulename;
+			options = options || {};
       if (!options["cpu"]) {
         console.log("Can't load module \"" + this.name + "\"! You need to pass the cpu object.");
         return;
