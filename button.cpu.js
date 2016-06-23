@@ -30,7 +30,7 @@
         button.append(text);
       }
       for (var k in options.attrs) {
-        if (options.attrs.hasOwnProperty(k) && k != 1) {
+        if (options.attrs.hasOwnProperty(k) && k != 0) {
           button.attr(k, options.attrs[k]);
         }
       }
