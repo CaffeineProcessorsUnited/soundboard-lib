@@ -48,11 +48,12 @@
           copy[k] = o[k];
         }
       }
+      return copy;
     };
     cpu.prototype.extend = function(o1, o2) {
       // extend object1 with object2
       var e = this.clone(o1);
-      for (var k in e) {
+      for (var k in o2) {
           if (o2.hasOwnProperty(k)) {
              e[k] = o2[k];
           }
