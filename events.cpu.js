@@ -14,20 +14,20 @@
       });
     };
     module.prototype.addEventListener = function(name, listener, onRegister) {
-      if (!events[name]) {
-        events[name] = [];
+      if (!this.events[name]) {
+        this.events[name] = [];
       }
-      events[name].push(listener);
+      this.events[name].push(listener);
       if (onRegister && typeof onRegister === "function") {
         onRegister(cpu);
       }
     };
     module.prototype.trigger = function(name, data) {
-      if (!events[name]) {
-        events[name] = [];
+      if (!this.events[name]) {
+        this.events[name] = [];
       }
-      for (var i = 0; i < events[name].length; i++) {
-        events[name][i](cpu, data);
+      for (var i = 0; i < this.events[name].length; i++) {
+        this.events[name][i](cpu, data);
       }
     };
     return module;
