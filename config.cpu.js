@@ -14,7 +14,6 @@
       }
       this.cpu = options["cpu"];
       this.config = {};
-      this.update();
     };
     module.prototype.load = function(config) {
       this.config = config;
