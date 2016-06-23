@@ -8,9 +8,9 @@
     function module(options) {
       this.name = modulename;
       this.events = {};
-      cpu.module(this.name).trigger("init");
+      this.trigger("init");
       $(document).ready(function() {
-        cpu.module(this.name).trigger("ready");
+        this.trigger("ready");
       });
     };
     module.prototype.addEventListener = function(name, listener, onRegister) {
