@@ -1,9 +1,9 @@
 /**
-  CPU - list
+  CPU - button
   Dependency: core
 **/
 (function() {
-	var modulename = "list";
+	var modulename = "button";
   var module = (function(modulename) {
     function module(options) {
       this.name = modulename;

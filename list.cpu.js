@@ -19,7 +19,8 @@
       options.genRow = options.genRow || function(item, options) {
         return $('<li></li>').text(this.cpu.module("util").format(item));
       };
-      var list = $('<ul></ul>');
+      var list = options.container || $('<ul></ul>');
+			list.empty();
       options.list.forEach(function(item, index){
         list.append(options.genRow(index, item, options));
       });

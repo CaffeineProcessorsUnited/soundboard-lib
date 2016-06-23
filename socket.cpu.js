@@ -40,8 +40,9 @@
 			}
 			if (listeners["onreceive"]) {
 				this.cpu.module("events").addEventListener("socket.receive." + name, listeners["onreceive"], function(cpu) {
+					self = this;
 					cpu.module("socket").socket.on(name, function(data) {
-						this.cpu.module("events").trigger("socket.receive." + name, data);
+						self.cpu.module("events").trigger("socket.receive." + name, data);
 					});
 				});
 			}
