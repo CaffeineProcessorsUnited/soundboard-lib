@@ -9,8 +9,9 @@
       this.name = modulename;
       this.events = {};
       this.trigger("init");
+			self = this;
       $(document).ready(function() {
-        this.trigger("ready");
+        self.trigger("ready");
       });
     };
     module.prototype.addEventListener = function(name, listener, onRegister) {
