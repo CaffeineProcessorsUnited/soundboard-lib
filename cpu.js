@@ -15,6 +15,7 @@
       if (!force) {
         force = false;
       }
+      console.log(options);
       if (window.cpumodules && window.cpumodules[name]) {
         // we are in a browser
         if (!this.modules[name] || force) {
