@@ -20,8 +20,13 @@
         console.log("Can't load module \"" + this.name + "\"! You need to pass the io object.");
         return;
       }
+			var defaults = {
+				host : "localhost",
+				port : "8080",
+				protokoll : "http"
+			}
 			this.io = options["io"]
-      this.socket = this.io();
+      this.socket = this.io(defaults.protokoll + "://" + defaults.host + ":" + defaults.port);
     };
     module.prototype.on = function(name, listeners) {
       if (!this.socket) {
@@ -34,8 +39,8 @@
 				this.cpu.module("events").addEventListener("socket.emit." + name, listeners["onemit"]);
 			}
 			if (listeners["onreceive"]) {
-				this.cpu.module("events").addEventListener("socket.receive." + name, listeners["onreceive"], function() {
-					this.socket.on(name, function(data) {
+				this.cpu.module("events").addEventListener("socket.receive." + name, listeners["onreceive"], function(cpu) {
+					cpu.module("socket").socket.on(name, function(data) {
 						this.cpu.module("events").trigger("socket.receive." + name, data);
 					});
 				});
