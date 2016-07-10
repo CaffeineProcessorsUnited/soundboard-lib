@@ -10,9 +10,6 @@
       this.events = {};
       this.trigger("init");
 			self = this;
-      $(document).ready(function() {
-        self.trigger("ready");
-      });
     };
     Module.prototype.addEventListener = function(name, listener, onRegister) {
       if (!this.events[name]) {

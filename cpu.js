@@ -16,18 +16,20 @@
         force = false;
       }
       console.log(options);
-      if (window.cpumodules && window.cpumodules[name]) {
+      console.log(typeof name);
+      if (typeof window !== "undefined" && window.cpumodules && window.cpumodules[name]) {
         // we are in a browser
         if (!this.modules[name] || force) {
           this.modules[name] = new window.cpumodules[name](options);
         } else {
           console.log("The module \"" + name + "\" is already loaded! User 'force' to override the old one.");
         }
-      } else if (typeof name === "object") {
+      } else if (typeof name === "object" || typeof name === "function") {
         // we are in node.js
-        var module = new name(options);
-        if (!this.modules[module.name] || force) {
-          this.modules[module.name] = module;
+        var Module = (typeof name === "object") ? name : new name(options);
+        console.log(Module);
+        if (!this.modules[Module.name] || force) {
+          this.modules[Module.name] = Module;
         } else {
           console.log("This module \"" + name + "\" is already loaded! User 'force' to override the old one.");
         }
@@ -60,11 +62,15 @@
        }
        return e;
     };
+    cpu.prototype.ready = function() {
+      this.module("events").trigger("ready");
+    };
+
     return cpu;
   })();
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = cpu;
+    module.exports = new cpu;
   } else {
     window.cpu = cpu;
     window.cpumodules = {};
