@@ -4,8 +4,8 @@
 **/
 (function() {
 	var modulename = "player";
-  var module = (function(modulename) {
-    function module(options) {
+  var Module = (function(modulename) {
+    function Module(options) {
       this.name = modulename;
       var defaults {
         timeupdateInterval = 500,
@@ -28,7 +28,7 @@
       this.time;
       this.oldtrackinfo;
     };
-    module.prototype.setUpdateTime = function() {
+    Module.prototype.setUpdateTime = function() {
       this.timeupdate = setInterval(function() {
         time = -1;
         switch (this.service) {
@@ -52,7 +52,7 @@
         }
       }, this.timeupdateInterval);
     };
-    module.prototype.createAudioElement = function(attributes, events) {
+    Module.prototype.createAudioElement = function(attributes, events) {
       var defaults = {
         controls: "true"
         loop: "false"
@@ -73,7 +73,7 @@
       player[0].load();
       return player;
     };
-    module.prototype.createYouTubePlayer = function() {
+    Module.prototype.createYouTubePlayer = function() {
       this.player = new YT.Player('player', {
         height: '390',
         width: '640',
@@ -104,7 +104,7 @@
       });
       return true;
     }
-    module.prototype.validTrack = function(track) {
+    Module.prototype.validTrack = function(track) {
       valid = true;
       if (!this.cpu.module("config").get("services", this.service)) {
         this.cpu.module("config").log("the server doesnt support this service!");
@@ -112,10 +112,10 @@
       }
       return valid;
     };
-    module.prototype.isSameTrack = function(track) {
+    Module.prototype.isSameTrack = function(track) {
       return this.cpu.module("util").objequal(track, this.oldtrackinfo);
     };
-    module.prototype.playTrack = function(trackinfo) {
+    Module.prototype.playTrack = function(trackinfo) {
       if (isSameTrack()) {
         this.cpu.module("util").log(trackinfo);
         cpu.module("util").log("same track! just continue...");
@@ -235,15 +235,15 @@
         socket.emit("next");
       }
     }
-    return module;
+    return Module;
   })(modulename);
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = module;
+    module.exports = Module;
   } else {
     if (!window.cpumodules) {
       window.cpumodules = {};
     }
-    window.cpumodules[modulename] = module;
+    window.cpumodules[modulename] = Module;
   }
 })();

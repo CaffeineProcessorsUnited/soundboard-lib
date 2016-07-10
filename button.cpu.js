@@ -4,8 +4,8 @@
 **/
 (function() {
 	var modulename = "button";
-  var module = (function(modulename) {
-    function module(options) {
+  var Module = (function(modulename) {
+    function Module(options) {
       this.name = modulename;
       if (!options["cpu"]) {
         console.log("Can't load module \"" + this.name + "\"! You need to pass the cpu object.");
@@ -13,7 +13,7 @@
       }
       this.cpu = options["cpu"];
     }
-    module.prototype.genButton = function(options) {
+    Module.prototype.genButton = function(options) {
       options = options || {};
       options.attrs = options.attrs || {};
 
@@ -36,15 +36,15 @@
       }
       return button;
     };
-    return module;
+    return Module;
   })(modulename);
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = module;
+    module.exports = Module;
   } else {
     if (!window.cpumodules) {
       window.cpumodules = {};
     }
-    window.cpumodules[modulename] = module;
+    window.cpumodules[modulename] = Module;
   }
 })();

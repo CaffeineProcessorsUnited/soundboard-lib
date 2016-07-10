@@ -4,8 +4,8 @@
 **/
 (function() {
 	var modulename = "socket";
-  var module = (function(modulename) {
-    function module(options) {
+  var Module = (function(modulename) {
+    function Module(options) {
       this.name = modulename;
       if (!options) {
         console.log("Can't load module \"" + this.name + "\"! You need to pass some options.");
@@ -28,7 +28,7 @@
 			this.io = options["io"]
       this.socket = this.io(defaults.protokoll + "://" + defaults.host + ":" + defaults.port);
     };
-    module.prototype.on = function(name, listeners) {
+    Module.prototype.on = function(name, listeners) {
       if (!this.socket) {
         this.cpu.module("util").log("Socket not loaded!");
 				return;
@@ -47,7 +47,7 @@
 				});
 			}
     };
-    module.prototype.emit = function(name, data) {
+    Module.prototype.emit = function(name, data) {
       if (!this.socket) {
         this.cpu.module("util").log("Socket not loaded!");
 				return;
@@ -57,7 +57,7 @@
 			this.cpu.module("events").trigger("socket.emit." + name, data);
 			this.socket.emit(name, data);
     };
-    module.prototype.trigger = function(name, data) {
+    Module.prototype.trigger = function(name, data) {
       if (!events[name]) {
         events[name] = [];
       }
@@ -65,15 +65,15 @@
         events[name][i](cpu, data);
       }
     };
-    return module;
+    return Module;
   })(modulename);
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = module;
+    module.exports = Module;
   } else {
     if (!window.cpumodules) {
       window.cpumodules = {};
     }
-    window.cpumodules[modulename] = module;
+    window.cpumodules[modulename] = Module;
   }
 })();

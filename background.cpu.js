@@ -1,11 +1,11 @@
 /**
-  CPU - background 
+  CPU - background
   Dependency: core, events
 **/
 (function() {
 	var modulename = "background";
-  var module = (function(modulename) {
-    function module(options) {
+  var Module = (function(modulename) {
+    function Module(options) {
       this.name = modulename;
       if (!options["cpu"]) {
         console.log("Can't load module \"" + this.name + "\"! You need to pass the cpu object.");
@@ -14,16 +14,16 @@
       this.cpu = options["cpu"];
       this.tasks = {};
     }
-    module.prototype.addUpdateListener = function(listner) {
+    Module.prototype.addUpdateListener = function(listner) {
       this.cpu.module("events").addEventListener(this.name + ".update", listner);
     };
 
-    module.prototype.set = function(name, state) {
+    Module.prototype.set = function(name, state) {
       this.tasks[name] = state;
       this.cpu.module("events").trigger(this.name + ".update");
     };
 
-    module.prototype.get = function(name) {
+    Module.prototype.get = function(name) {
       if (name) {
         return this.tasks[name];
       }
@@ -38,15 +38,15 @@
       }
       return working;
     };
-    return module;
+    return Module;
   })(modulename);
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = module;
+    module.exports = Module;
   } else {
     if (!window.cpumodules) {
       window.cpumodules = {};
     }
-    window.cpumodules[modulename] = module;
+    window.cpumodules[modulename] = Module;
   }
 })();

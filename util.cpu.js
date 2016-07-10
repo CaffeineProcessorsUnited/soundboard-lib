@@ -4,8 +4,8 @@
 **/
 (function() {
 	var modulename = "util";
-  var module = (function(modulename) {
-    function module(options) {
+  var Module = (function(modulename) {
+    function Module(options) {
       this.name = modulename;
       if (!options) {
         console.log("Can't load module \"" + this.name + "\"! You need to pass some options.");
@@ -22,12 +22,12 @@
         return;
       }
     };
-    module.prototype.log = function() {
+    Module.prototype.log = function() {
       var message = window.util.format.apply(null, arguments);
       this.cpu.module("socket").emit("log", { 'log': message });
       console.log(message);
     };
-    module.prototype.objequal = function(a, b) {
+    Module.prototype.objequal = function(a, b) {
       function equal(a, b) {
         if (typeof a === "object" && typeof b === "object") {
           for (var k in a) {
@@ -50,15 +50,15 @@
       }
       return equal(a, b) && equal(b, a);
     };
-    return module;
+    return Module;
   })(modulename);
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = module;
+    module.exports = Module;
   } else {
     if (!window.cpumodules) {
       window.cpumodules = {};
     }
-    window.cpumodules[modulename] = module;
+    window.cpumodules[modulename] = Module;
   }
 })();

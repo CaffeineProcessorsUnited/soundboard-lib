@@ -4,8 +4,8 @@
 **/
 (function() {
 	var modulename = "config";
-  var module = (function(modulename) {
-    function module(options) {
+  var Module = (function(modulename) {
+    function Module(options) {
       this.name = modulename;
 			options = options || {};
       if (!options["cpu"]) {
@@ -15,10 +15,10 @@
       this.cpu = options["cpu"];
       this.config = {};
     };
-    module.prototype.load = function(config) {
+    Module.prototype.load = function(config) {
       this.config = config;
     };
-    module.prototype.get = function() {
+    Module.prototype.get = function() {
       var c = this.config;
       for (var i = 0; i < arguments.length; i++) {
         if (c[arguments[i]]) {
@@ -29,18 +29,18 @@
       }
 			return c;
     };
-    module.prototype.clear = function() {
+    Module.prototype.clear = function() {
       this.config = {};
     };
-    return module;
+    return Module;
   })(modulename);
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = module;
+    module.exports = Module;
   } else {
     if (!window.cpumodules) {
       window.cpumodules = {};
     }
-    window.cpumodules[modulename] = module;
+    window.cpumodules[modulename] = Module;
   }
 })();

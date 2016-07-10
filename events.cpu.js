@@ -4,8 +4,8 @@
 **/
 (function() {
 	var modulename = "events";
-  var module = (function(modulename) {
-    function module(options) {
+  var Module = (function(modulename) {
+    function Module(options) {
       this.name = modulename;
       this.events = {};
       this.trigger("init");
@@ -14,7 +14,7 @@
         self.trigger("ready");
       });
     };
-    module.prototype.addEventListener = function(name, listener, onRegister) {
+    Module.prototype.addEventListener = function(name, listener, onRegister) {
       if (!this.events[name]) {
         this.events[name] = [];
       }
@@ -23,7 +23,7 @@
         onRegister(cpu);
       }
     };
-    module.prototype.trigger = function(name, data) {
+    Module.prototype.trigger = function(name, data) {
       if (!this.events[name]) {
         this.events[name] = [];
       }
@@ -31,15 +31,15 @@
         this.events[name][i](cpu, data);
       }
     };
-    return module;
+    return Module;
   })(modulename);
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = module;
+    module.exports = Module;
   } else {
     if (!window.cpumodules) {
       window.cpumodules = {};
     }
-    window.cpumodules[modulename] = module;
+    window.cpumodules[modulename] = Module;
   }
 })();
