@@ -23,7 +23,7 @@
       }
     };
     Module.prototype.log = function() {
-      var message = window.util.format.apply(null, arguments);
+      var message = this.utils.format.apply(null, arguments);
       this.cpu.module("socket").emit("log", { 'log': message });
       console.log(message);
     };

@@ -25,37 +25,47 @@
 				port : "8080",
 				protokoll : "http"
 			}
-			this.io = options["io"]
-      this.socket = this.io(defaults.protokoll + "://" + defaults.host + ":" + defaults.port);
+			if(!options["server"]){
+				options["server"] = false;
+			}
+			this.io = options["io"];
+			if(!options["server"]) {
+      	this.socket = this.io(defaults.protokoll + "://" + defaults.host + ":" + defaults.port);
+			}
     };
-    Module.prototype.on = function(name, listeners) {
-      if (!this.socket) {
+    Module.prototype.on = function(name, listeners, socket){
+			var currentSocket = this.socket || socket;
+			if (!currentSocket) {
         this.cpu.module("util").log("Socket not loaded!");
 				return;
       }
 			name = name.trim();
 			listeners = listeners || {};
 			if (listeners["onemit"]) {
-				this.cpu.module("events").addEventListener("socket.emit." + name, listeners["onemit"]);
+				this.cpu.module("events").addEventListener("socket.emit." + name + currentSocket.id, listeners["onemit"]);
 			}
 			if (listeners["onreceive"]) {
-				this.cpu.module("events").addEventListener("socket.receive." + name, listeners["onreceive"], function(cpu) {
-					self = this;
-					cpu.module("socket").socket.on(name, function(data) {
-						self.cpu.module("events").trigger("socket.receive." + name, data);
+				this.cpu.module("events").addEventListener("socket.receive." + name + currentSocket.id, listeners["onreceive"], function(cpu) {
+					currentSocket.on(name, function(data) {
+						cpu.module("events").trigger("socket.receive." + name + currentSocket.id, data);
 					});
 				});
 			}
     };
-    Module.prototype.emit = function(name, data) {
-      if (!this.socket) {
+    Module.prototype.emit = function(name, data, socketID) {
+			var currentSocket = this.socket || (socketID !== undefined)? this.io.to(socketID) : undefined;
+      if (!currentSocket && !this.io.sockets) {
         this.cpu.module("util").log("Socket not loaded!");
 				return;
       }
 			name = name.trim();
 			data = data || {};
-			this.cpu.module("events").trigger("socket.emit." + name, data);
-			this.socket.emit(name, data);
+			if(currentSocket === undefined)  {
+				this.io.emit(name, data);
+			} else {
+				this.cpu.module("events").trigger("socket.emit." + name + currentSocket.id, data);
+				currentSocket.emit(name, data);
+			}
     };
     Module.prototype.trigger = function(name, data) {
       if (!events[name]) {

@@ -10,6 +10,7 @@
       this.events = {};
       this.trigger("init");
 			self = this;
+			this.cpu = options["cpu"];
     };
     Module.prototype.addEventListener = function(name, listener, onRegister) {
       if (!this.events[name]) {
@@ -17,7 +18,7 @@
       }
       this.events[name].push(listener);
       if (onRegister && typeof onRegister === "function") {
-        onRegister(cpu);
+        onRegister(this.cpu);
       }
     };
     Module.prototype.trigger = function(name, data) {
@@ -25,7 +26,7 @@
         this.events[name] = [];
       }
       for (var i = 0; i < this.events[name].length; i++) {
-        this.events[name][i](cpu, data);
+        this.events[name][i](this.cpu, data);
       }
     };
     return Module;
