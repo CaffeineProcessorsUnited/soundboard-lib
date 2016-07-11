@@ -31,25 +31,31 @@
 			this.io = options["io"];
 			if(!options["server"]) {
       	this.socket = this.io(defaults.protokoll + "://" + defaults.host + ":" + defaults.port);
+      	this.names = [];
 			}
     };
-    Module.prototype.on = function(name, listeners, socket){
-			var currentSocket = this.socket || socket;
+    Module.prototype.registerSocket = function(socket, events){
+    	var currentSocket = this.socket || socket;
 			if (!currentSocket) {
         this.cpu.module("util").log("Socket not loaded!");
 				return;
       }
+    	var events = events || this.names;
+    	for (var i = 0; i < events.length; i++) {
+	    	currentSocket.on(name, function(data) {
+					cpu.module("events").trigger("socket.receive." + name, { socket: currentSocket, data: data });
+				});
+    	}
+    }
+    Module.prototype.on = function(name, listeners){
 			name = name.trim();
 			listeners = listeners || {};
 			if (listeners["onemit"]) {
 				this.cpu.module("events").addEventListener("socket.emit." + name, listeners["onemit"]);
 			}
 			if (listeners["onreceive"]) {
-				this.cpu.module("events").addEventListener("socket.receive." + name, listeners["onreceive"], function(cpu) {
-					currentSocket.on(name, function(data) {
-						cpu.module("events").trigger("socket.receive." + name, { socket: currentSocket, data: data });
-					});
-				});
+				this.names.push(name);
+				this.cpu.module("events").addEventListener("socket.receive." + name, listeners["onreceive"]);
 			}
     };
     Module.prototype.emit = function(name, data, socketID) {
