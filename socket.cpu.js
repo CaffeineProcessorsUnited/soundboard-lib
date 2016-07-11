@@ -42,12 +42,12 @@
 			name = name.trim();
 			listeners = listeners || {};
 			if (listeners["onemit"]) {
-				this.cpu.module("events").addEventListener("socket.emit." + name + currentSocket.id, listeners["onemit"]);
+				this.cpu.module("events").addEventListener("socket.emit." + name, listeners["onemit"]);
 			}
 			if (listeners["onreceive"]) {
-				this.cpu.module("events").addEventListener("socket.receive." + name + currentSocket.id, listeners["onreceive"], function(cpu) {
+				this.cpu.module("events").addEventListener("socket.receive." + name, listeners["onreceive"], function(cpu) {
 					currentSocket.on(name, function(data) {
-						cpu.module("events").trigger("socket.receive." + name + currentSocket.id, data);
+						cpu.module("events").trigger("socket.receive." + name, { socket: currentSocket, data: data });
 					});
 				});
 			}
@@ -63,9 +63,9 @@
 			if(currentSocket === undefined)  {
 				this.io.emit(name, data);
 			} else {
-				this.cpu.module("events").trigger("socket.emit." + name + currentSocket.id, data);
 				currentSocket.emit(name, data);
 			}
+			this.cpu.module("events").trigger("socket.emit." + name, { socket: currentSocket, data: data });
     };
     Module.prototype.trigger = function(name, data) {
       if (!events[name]) {
