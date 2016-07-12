@@ -31,8 +31,8 @@
 			this.io = options["io"];
 			if(!options["server"]) {
       	this.socket = this.io(defaults.protokoll + "://" + defaults.host + ":" + defaults.port);
-      	this.names = [];
 			}
+      this.names = [];
     };
     Module.prototype.registerSocket = function(socket, events){
     	var currentSocket = this.socket || socket;
@@ -42,6 +42,7 @@
       }
     	var events = events || this.names;
     	for (var i = 0; i < events.length; i++) {
+				var name = events[i];
 	    	currentSocket.on(name, function(data) {
 					cpu.module("events").trigger("socket.receive." + name, { socket: currentSocket, data: data });
 				});
