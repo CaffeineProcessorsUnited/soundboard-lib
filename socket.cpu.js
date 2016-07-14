@@ -42,12 +42,14 @@
       }
     	var events = events || this.names;
     	for (var i = 0; i < events.length; i++) {
-				var name = events[i];
-	    	currentSocket.on(name, function(data) {
-					cpu.module("events").trigger("socket.receive." + name, { socket: currentSocket, data: data });
-				});
+	    	this._addEventtoSocket(events[i], currentSocket);
     	}
     }
+		Module.prototype._addEventtoSocket = function(name, socket){
+			socket.on(name, function(data){
+				cpu.module("events").trigger("socket.receive." + name, { socket: socket, data: data });
+			});
+		};
     Module.prototype.on = function(name, listeners){
 			name = name.trim();
 			listeners = listeners || {};
@@ -60,8 +62,13 @@
 			}
     };
     Module.prototype.emit = function(name, data, socketID) {
-			var currentSocket = this.socket || (socketID !== undefined)? this.io.to(socketID) : undefined;
-      if (!currentSocket && !this.io.sockets) {
+			var currentSocket;
+			if(socketID !== undefined){
+				currentSocket = this.io.to(socketID);
+			} else {
+				currentSocket = this.socket || undefined;
+      }
+			if (!currentSocket && !this.io.sockets) {
         this.cpu.module("util").log("Socket not loaded!");
 				return;
       }
@@ -72,7 +79,7 @@
 			} else {
 				currentSocket.emit(name, data);
 			}
-			this.cpu.module("events").trigger("socket.emit." + name, { socket: currentSocket, data: data });
+			this.cpu.module("events").trigger("socket.emit." + name, { 'socket': currentSocket, 'data': data });
     };
     Module.prototype.trigger = function(name, data) {
       if (!events[name]) {
