@@ -42,10 +42,10 @@
       }
     	var events = events || this.names;
     	for (var i = 0; i < events.length; i++) {
-	    	this._addEventtoSocket(events[i], currentSocket);
+	    	this._addEventtoSocket(events[i], this.cpu, currentSocket);
     	}
-    }
-		Module.prototype._addEventtoSocket = function(name, socket){
+    };
+		Module.prototype._addEventtoSocket = function(name,cpu, socket){
 			socket.on(name, function(data){
 				cpu.module("events").trigger("socket.receive." + name, { socket: socket, data: data });
 			});
