@@ -15,8 +15,8 @@
       if (!force) {
         force = false;
       }
-      console.log(options);
-      console.log(typeof name);
+      //console.log(options);
+      //console.log(typeof name);
       if (typeof window !== "undefined" && window.cpumodules && window.cpumodules[name]) {
         // we are in a browser
         if (!this.modules[name] || force) {
@@ -27,11 +27,11 @@
       } else if (typeof name === "object" || typeof name === "function") {
         // we are in node.js
         var Module = (typeof name === "object") ? name : new name(options);
-        console.log(Module);
+        //console.log(Module);
         if (!this.modules[Module.name] || force) {
           this.modules[Module.name] = Module;
         } else {
-          console.log("This module \"" + name + "\" is already loaded! User 'force' to override the old one.");
+          console.log("This module \"" + Module.name + "\" is already loaded! User 'force' to override the old one.");
         }
       } else {
         console.log("Couldn't load module \"" + name + "\"");
