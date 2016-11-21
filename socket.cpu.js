@@ -1,6 +1,6 @@
 /**
   CPU - socket
-  Dependency: core, util
+  Dependency: core, util, auth
 **/
 (function() {
 	var modulename = "socket";
@@ -29,6 +29,7 @@
 				options["server"] = false;
 			}
 			this.io = options["io"];
+			this.server = options["server"];
 			if(!options["server"]) {
       	this.socket = this.io(defaults.protokoll + "://" + defaults.host + ":" + defaults.port);
 			}
@@ -47,7 +48,11 @@
     };
 		Module.prototype._addEventtoSocket = function(name,cpu, socket){
 			socket.on(name, function(data){
-				cpu.module("events").trigger("socket.receive." + name, { socket: socket, data: data });
+				if (!this.server || cpu.module("auth").isLogin(socket)) {
+					cpu.module("events").trigger("socket.receive." + name, { socket: socket, data: data });
+				} else {
+					cpu.module("events").trigger("socket.nologin", {socket: socket});
+				}
 			});
 		};
     Module.prototype.on = function(name, listeners){
