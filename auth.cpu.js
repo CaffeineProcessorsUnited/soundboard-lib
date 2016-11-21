@@ -1,6 +1,6 @@
 /**
-  CPU - config
-  Dependency: core, socket
+  CPU - auth`
+  Dependency: core
 **/
 (function() {
 	var modulename = "auth";
@@ -15,16 +15,17 @@
       this.cpu = options["cpu"];
       this.credentials = {};
       this.auth = {}
-    };
-		Module.prototype.loadCreds(creds) {
+    }
+
+		Module.prototype.loadCreds = function(creds) {
 			this.credentials = creds;
-		}
+		};
     Module.prototype.addClient = function (id) {
       if (!this.auth.hasOwnProperty(id)) {
         this.auth[id] = false;
       }
     };
-    Module.prototype.login(id, username, passwd) {
+    Module.prototype.login = function(id, username, passwd) {
 			this.addClient(id);
 			if (this.credentials.hasOwnProperty(username)) {
 				if (this.credentials[username] == passwd) {
@@ -32,18 +33,18 @@
 				}
 			}
     };
-		Module.prototype.logout(id) {
+		Module.prototype.logout = function(id) {
 			if (this.auth.hasOwnProperty(id)) {
         this.auth[id] = false;
       }
-		}
-		Module.prototype.isLogin(id) {
+		};
+		Module.prototype.isLogin = function(id) {
 			if (this.auth.hasOwnProperty(id)) {
         return this.auth[id];
       } else {
 				return false;
 			}
-		}
+		};
     return Module;
   })(modulename);
 
