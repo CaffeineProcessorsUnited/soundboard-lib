@@ -51,7 +51,7 @@
 				if (!this.server || cpu.module("auth").isLogin(socket)) {
 					cpu.module("events").trigger("socket.receive." + name, { socket: socket, data: data });
 				} else {
-					cpu.module("events").trigger("socket.nologin", {socket: socket});
+					cpu.module("events").trigger("socket.receive.nologin", {name: name, socket: socket, data: data});
 				}
 			});
 		};
