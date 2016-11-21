@@ -48,7 +48,7 @@
     };
 		Module.prototype._addEventtoSocket = function(name,cpu, socket){
 			socket.on(name, function(data){
-				if (!this.server || cpu.module("auth").isLogin(socket)) {
+				if (!this.server || cpu.module("auth").isLogin(socket) || name == "login") {
 					cpu.module("events").trigger("socket.receive." + name, { socket: socket, data: data });
 				} else {
 					cpu.module("events").trigger("socket.receive.nologin", {name: name, socket: socket, data: data});
